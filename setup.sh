@@ -7,35 +7,21 @@ sudo apt-get update
 echo "****** Installing Curl ******"
 sudo apt-get install curl -y
 echo "****** Installing RVM ******"
-#gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
 su - vagrant -c 'gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3'
-#\curl -sSL https://get.rvm.io | bash -s stable --ruby=$1
 su - vagrant -c 'curl -sSL https://get.rvm.io | bash -s stable'
 echo "****** Installing Ruby $1 ******"
 #su - vagrant -c "rvm install $1" - this works but must compile ruby
-su - vagrant -c "rvm mount -r $1"
+su - vagrant -c "rvm mount -r $1" #use this if there is a binary available to avoid need to compile ruby
 source /home/vagrant/.rvm/scripts/rvm
-#su - vagrant -c "rvm use $2"
 su - vagrant -c "rvm --default use $2"
 su - vagrant -c "rvm gemset list"
 su - vagrant -c "rvm gemset create $3"
-#su - vagrant -c "rvm gemset use $3"
 su - vagrant -c "rvm use $2@$3 --default"
 su - vagrant -c "rvm gemset list"
 echo "****** Installing Git ******"
 sudo apt-get install git -y
 echo "****** Installing $4 ******"
 if [ "$4" == "MySQL" ]; then
-	#wget http://repo.mysql.com/mysql-apt-config_0.3.2-1ubuntu14.04_all.deb
-	#sudo dpkg -i mysql-apt-config_0.3.2-1ubuntu14.04_all.deb
-	#sudo apt-get update
-	#sudo apt-get install debconf-utils
-	#sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password vagrant'
-	#sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password vagrant'
-	#sudo DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-client mysql-server
-	#sudo service mysqld start
-	#sudo apt-get install -y mysql-client mysql-server
-	#sudo service mysqld start
 	echo "Updating PHP repository"
 	sudo apt-get install python-software-properties build-essential -y
 	sudo add-apt-repository ppa:ondrej/php5 -y 
@@ -58,9 +44,7 @@ if [ "$4" == "MySQL" ]; then
 else
 	cd /etc
 	sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" >> /etc/apt/sources.list.d/postgresql.list'	
-	#sudo apt-get -y install python-software-properties
 	wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-	
 	sudo apt-get update
 	sudo apt-get install postgresql-9.3 pgadmin3 -y
 fi	
@@ -72,10 +56,6 @@ echo "****** Adding Passenger & Nginx Repo ******"
 	sudo chmod 600 /etc/apt/sources.list.d/passenger.list
 	sudo apt-get update
 echo "****** Installing Passenger & Nginx ******"
-	#gpg --keyserver keyserver.ubuntu.com --recv-keys 561F9B9CAC40B2F7
-	#gpg --armor --export 561F9B9CAC40B2F7 | sudo apt-key add -
-	#sudo apt-get update
-	#sudo apt-get install nginx-full passenger -y
 	sudo apt-get install nginx-extras passenger -y
 echo "****** Installing Rails ******"
 	su - vagrant -c "gem install rails --version=$5 --no-rdoc --no-ri"
