@@ -6,16 +6,13 @@ cd /vagrant
 sudo yum update
 echo "****** Installing Curl ******"
 sudo yum install curl -y
-#sudo yum install gcc-c++ patch readline readline-devel zlib zlib-devel 
-#sudo yum install libyaml-devel libffi-devel openssl-devel make 
-#sudo yum install bzip2 autoconf automake libtool bison iconv-devel
 echo "****** Installing RVM ******"
 su - vagrant -c 'gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3'
 su - vagrant -c 'curl -sSL https://get.rvm.io | bash -s stable'
 echo "****** Installing Ruby $1 ******"
 su - vagrant -c "rvm install $1" - this works but must compile ruby
-#su - vagrant -c "rvm mount -r $1" # this failed - use this if there is a binary available to avoid need to compile ruby
-#su - vagrant -c "rvm mount -r $1 --verify-downloads 2" # use this if there is a binary available to avoid need to compile ruby
+#su - vagrant -c "rvm mount -r $1" # use this if there is a binary available to avoid need to compile ruby - this fails
+#su - vagrant -c "rvm mount -r $1 --verify-downloads 2" # use this if there is a binary available to avoid need to compile ruby - this fails too
 source /home/vagrant/.rvm/scripts/rvm
 su - vagrant -c "rvm --default use $2"
 su - vagrant -c "rvm gemset list"
@@ -26,25 +23,6 @@ echo "****** Installing Git ******"
 sudo yum install git -y
 echo "****** Installing $4 ******"
 if [ "$4" == "MySQL" ]; then
-	echo "Updating PHP repository"
-	#sudo yum install python-software-properties build-essential -y
-	#sudo add-apt-repository ppa:ondrej/php5 -y 
-	#sudo yum update 
-	
-	#echo "Installing PHP"
-	#sudo yum install php5-common php5-dev php5-cli php5-fpm -y 
- 
-	#echo "Installing PHP extensions"
-	#sudo yum install curl php5-curl php5-gd php5-mcrypt php5-mysql -y 
-	
-	#echo "Preparing MySQL"
-	#sudo yum install debconf-utils -y
-	#sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password vagrant"
- 
-	#sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password vagrant"
-	
-	#echo "Installing MySQL server"
-	#sudo yum install mysql-server -y 
 	sudo yum install mysql-server -y
 	sudo /etc/init.d/mysqld restart
 else
@@ -55,19 +33,12 @@ else
 	sudo yum install postgresql-9.3 pgadmin3 -y
 fi	
 echo "****** Adding Passenger & Nginx Repo ******"
-	#sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 561F9B9CAC40B2F7
-	#sudo yum install apt-transport-https ca-certificates -y
-	#echo "deb https://oss-binaries.phusionpassenger.com/apt/passenger trusty main" | sudo tee /etc/apt/sources.list.d/passenger.list
 	sudo yum install epel-release pygpgme curl -y
-	#sudo `echo "curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo"`
 	sudo curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
 	sudo chown root: /etc/yum.repos.d/passenger.repo
 	sudo chmod 600 /etc/yum.repos.d/passenger.repo
-	#sudo chown root: /etc/apt/sources.list.d/passenger.list
-	#sudo chmod 600 /etc/apt/sources.list.d/passenger.list
 	sudo yum update
 echo "****** Installing Passenger & Nginx ******"
-	#sudo yum install nginx-extras passenger -y
 	sudo yum install nginx passenger -y
 echo "****** Installing Rails ******"
 	su - vagrant -c "gem install rails --version=$5 --no-rdoc --no-ri"
