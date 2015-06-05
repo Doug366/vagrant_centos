@@ -12,7 +12,7 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "centos64-x86_64-20140116"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -53,7 +53,7 @@ Vagrant.configure(2) do |config|
   # end
   #
   config.vm.provider "virtualbox" do |v|
-      v.name = "Vagrant Ubuntu"
+      v.name = "Vagrant Centos"
       v.customize ["modifyvm", :id, "--memory", "1024"]
   end
   # View the documentation for the provider you are using for more
@@ -76,7 +76,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell" do |s|
       s.path = "setup.sh"
       # argument mapping ["ruby binary url", "Ruby Version", "RVM Gemset name", "MySQL or PostgreSQL", "Rails version", "ImagineMagick required"]
-      #s.args   = ["2.1.2", "tutorial", "MySQL"]
-      s.args = ["https://rvm.io/binaries/ubuntu/14.04/x86_64/ruby-2.1.2.tar.bz2", "ruby-2.1.2", "tutorial", "MySQL", "3.2.19", "true"]
+      s.args = ["ruby-1.9.3", "ruby-1.9.3", "vagrant_centos", "MySQL", "3.2.13", "true"] # this works when using rvm install $1
+      #s.args = ["https://rvm.io/binaries/centos/6.4/x86_64/ruby-1.9.3-p484.tar.bz2", "ruby-1.9.3", "vagrant_centos", "MySQL", "3.2.13", "true"]
   end
 end
