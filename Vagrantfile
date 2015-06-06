@@ -76,7 +76,8 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell" do |s|
       s.path = "setup.sh"
       # argument mapping ["ruby binary url", "Ruby Version", "RVM Gemset name", "MySQL or PostgreSQL", "Rails version", "ImagineMagick required"]
-      s.args = ["ruby-1.9.3", "ruby-1.9.3", "vagrant_centos", "MySQL", "3.2.13", "true"] # this works when using rvm install $1
+      #s.args = ["ruby-1.9.3", "ruby-1.9.3", "vagrant_centos", "MySQL", "3.2.13", "true"] # this works when using rvm install $1 with MySQL
       #s.args = ["https://rvm.io/binaries/centos/6.4/x86_64/ruby-1.9.3-p484.tar.bz2", "ruby-1.9.3", "vagrant_centos", "MySQL", "3.2.13", "true"]
+      s.args = ["ruby-1.9.3", "ruby-1.9.3", "vagrant_centos", "PostgreSQL", "3.2.13", "true"] #added this for PostgreSQL CentOS install
   end
 end

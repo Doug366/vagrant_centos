@@ -27,10 +27,12 @@ if [ "$4" == "MySQL" ]; then
 	sudo /etc/init.d/mysqld restart
 else
 	cd /etc
-	sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" >> /etc/apt/sources.list.d/postgresql.list'	
-	wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-	sudo yum update
-	sudo yum install postgresql-9.3 pgadmin3 -y
+	sudo curl -O http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-centos94-9.4-1.noarch.rpm
+	sudo rpm -ivh pgdg*
+	sudo yum install postgresql94-server -y
+	sudo service postgresql-9.4 initdb
+	sudo chkconfig postgresql-9.4 on
+	sudo service postgresql-9.4 start
 fi	
 echo "****** Adding Passenger & Nginx Repo ******"
 	sudo yum install epel-release pygpgme curl -y
